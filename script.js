@@ -78,7 +78,7 @@ function renderProjects(repos) {
     const topRepos = repos
         .filter(repo => !repo.fork)
         .sort((a, b) => b.stargazers_count - a.stargazers_count)
-        .slice(0, 4);
+        .slice(0, 10);
 
     topRepos.forEach(repo => {
         const project = document.createElement('div');
@@ -99,7 +99,6 @@ function renderProjects(repos) {
         container.appendChild(project);
     });
 }
-
 function renderRecentUpdates(repos) {
     const container = document.getElementById('updates-container');
     container.innerHTML = '';
@@ -108,7 +107,7 @@ function renderRecentUpdates(repos) {
     const sortedRepos = [...repos]
         .filter(repo => !repo.fork)
         .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-        .slice(0, 5); // Показываем 5 последних
+        .slice(0, 10); // Показываем 5 последних
 
     sortedRepos.forEach(repo => {
         const update = document.createElement('div');
@@ -177,6 +176,19 @@ function updateRepoCount(userData) {
     }
 }
 
+async function getCommitCount(repoName) {
+    try {
+        const response = await axios.get(`https://api.github.com/repos/${USERNAME}/${repoName}/commits?per_page=1`);
+        if (response.headers.link) {
+            const lastPage = response.headers.link.match(/&page=(\d+)>; rel="last"/);
+            return lastPage ? parseInt(lastPage[1]) : 1;
+        }
+        return 1;
+    } catch (error) {
+        console.error('Ошибка получения коммитов:', error);
+        return '?';
+    }
+}
 
 // Load GitHub data
 async function loadGitHubData() {
