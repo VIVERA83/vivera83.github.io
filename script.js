@@ -2,7 +2,7 @@
 const USERNAME = 'VIVERA83';
 const API_URL = `https://api.github.com/users/${USERNAME}`;
 const REPOS_URL = `https://api.github.com/users/${USERNAME}/repos`;
-const GITHUB_TOKEN = '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';
+const GITHUB_TOKEN = ""
 const CACHE_TIME = 60 * 60 * 1000; // 1 час кеширования
 
 axios.defaults.headers.common['Authorization'] = `token ${GITHUB_TOKEN}`;
