@@ -1,7 +1,6 @@
 import { getFrameworkIcon, getToolIcon } from './icons.js';
 
 
-// Render projects section
 export async function renderRecentUpdates(repos) {
     const container = document.getElementById('updates-container');
     container.innerHTML = '<div class="loading">Загрузка обновлений...</div>';
@@ -10,7 +9,7 @@ export async function renderRecentUpdates(repos) {
     const sortedRepos = [...repos]
         .filter(repo => !repo.fork)
         .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-        .slice(0, 5);
+        .slice(0, 12);
 
     // Получаем языки для каждого репозитория
     const reposWithLanguages = await Promise.all(sortedRepos.map(async repo => {

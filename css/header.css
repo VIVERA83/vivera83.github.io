@@ -1,36 +1,3 @@
-/*header {*/
-/*    background: linear-gradient(135deg, #0a192f, #172a45); !* Тёмный градиент *!*/
-/*    color: white; !* Явно белый текст *!*/
-/*    text-align: center;*/
-/*    padding: 60px 0;*/
-/*    position: relative;*/
-/*    overflow: hidden;*/
-
-/*}*/
-
-/*.avatar {*/
-/*    width: 150px;*/
-/*    height: 150px;*/
-/*    border-radius: 50%;*/
-/*    border: 5px solid rgba(255, 255, 255, 0.3);*/
-/*    object-fit: cover;*/
-/*    margin-bottom: 20px;*/
-/*}*/
-
-/*.stats {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    gap: 20px;*/
-/*    margin-top: 15px;*/
-/*    flex-wrap: wrap;*/
-/*}*/
-
-/*.stats span {*/
-/*    background: rgba(255, 255, 255, 0.1);*/
-/*    color: white; !* Белый текст в статистике *!*/
-/*    padding: 8px 15px;*/
-/*    border-radius: 30px;*/
-/*}*/
 header {
     background: linear-gradient(135deg, var(--bg-darker), var(--secondary));
     position: relative;

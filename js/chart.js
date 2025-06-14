@@ -7,9 +7,7 @@ export function initActivityChart() {
         datasets: [{
             label: 'Коммиты',
             data: [12, 19, 8, 15, 22, 18, 25, 12, 19, 16, 21, 14],
-            backgroundColor: 'rgba(79, 195, 247, 0.2)',
-            borderColor: '#4fc3f7',
-            borderWidth: 2,
+            borderWidth: 3,
             tension: 0.3
         }]
     };
