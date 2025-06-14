@@ -5,7 +5,7 @@ import { initActivityChart } from './chart.js';
 import { GITHUB_TOKEN } from './config.js';
 
 // Установка токена для axios
-axios.defaults.headers.common['Authorization'] = `token ${GITHUB_TOKEN}`;
+// axios.defaults.headers.common['Authorization'] = `token ${GITHUB_TOKEN}`;
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', async () => {
