@@ -57,7 +57,8 @@ export function getToolIcon(tool) {
     const icons = {
         'Docker': 'fab fa-docker',
         'Git': 'devicon-github-original',
-        'Kubernetes': 'fas fa-cube'
+        'Kubernetes': 'fas fa-cube',
+        'Nginx': 'devicon-nginx-original',
     };
     return icons[tool] || 'fas fa-toolbox';
 }

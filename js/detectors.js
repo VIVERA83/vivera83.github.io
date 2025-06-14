@@ -32,7 +32,8 @@ export function detectSkills(repos) {
     const TOOLS = {
         'Docker': ['docker'],
         'Git': ['git'],
-        'Kubernetes': ['kubernetes', 'k8s']
+        'Kubernetes': ['kubernetes', 'k8s'],
+        'Nginx': ['nginx'],
     };
 
     repos.forEach(repo => {
