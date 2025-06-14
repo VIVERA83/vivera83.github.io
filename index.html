@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIVERA83 - Разработчик</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Vivera83 - Разработчик</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/chart.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/projects.css">
 </head>
 <body>
 <header>
@@ -19,15 +24,6 @@
         </div>
     </div>
 </header>
-
-<section class="skills">
-    <div class="container">
-        <h2><i class="fas fa-laptop-code"></i> Технические навыки</h2>
-        <div id="skills-container">
-            <!-- Skills will be loaded by JavaScript -->
-        </div>
-    </div>
-</section>
 
 <section class="frameworks">
     <div class="container">
@@ -47,6 +43,22 @@
     </div>
 </section>
 
+<section class="tools">
+    <div class="container">
+        <h2><i class="fas fa-tools"></i> Инструменты</h2>
+        <div id="tools-container" class="skills-container">
+            <!-- Tools will be loaded by JavaScript -->
+        </div>
+    </div>
+</section>
+<section class="activity">
+    <div class="container">
+        <h2><i class="fas fa-chart-line"></i> Активность</h2>
+        <div id="chart-container">
+            <canvas id="activity-chart"></canvas>
+        </div>
+    </div>
+</section>
 <section class="projects">
     <div class="container">
         <h2><i class="fas fa-project-diagram"></i> Последние обновления</h2>
@@ -56,24 +68,6 @@
     </div>
 </section>
 
-<section class="projects">
-    <div class="container">
-        <h2><i class="fas fa-project-diagram"></i> Лучшие проекты</h2>
-        <div id="projects-container">
-            <!-- Projects will be loaded by JavaScript -->
-        </div>
-    </div>
-</section>
-
-
-<section class="activity">
-    <div class="container">
-        <h2><i class="fas fa-chart-line"></i> Активность</h2>
-        <div id="chart-container">
-            <canvas id="activity-chart"></canvas>
-        </div>
-    </div>
-</section>
 
 <footer>
     <div class="container">
@@ -90,6 +84,6 @@
 <!-- Libraries for charts and GitHub API -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="script.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
