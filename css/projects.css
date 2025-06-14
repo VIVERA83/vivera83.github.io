@@ -1,0 +1,53 @@
+.update-card {
+    border-left: 4px solid var(--primary);
+}
+
+.update-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.update-title {
+    color: var(--text-light);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.update-title:hover {
+    color: var(--accent);
+}
+
+.update-date {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 12px;
+    border-radius: 50px;
+}
+
+.update-description {
+    color: var(--text-muted);
+    margin: 12px 0;
+    line-height: 1.6;
+}
+
+.language-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.language-tag {
+    background: rgba(93, 139, 244, 0.1);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(93, 139, 244, 0.3);
+}

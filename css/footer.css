@@ -1,0 +1,35 @@
+footer {
+    background: var(--bg-darker);
+    border-top: 1px solid var(--border-color);
+    padding: 50px 0 30px;
+    margin-top: 50px;
+}
+
+.contacts {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+}
+
+.contacts a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.contacts a:hover {
+    color: var(--accent);
+    background: rgba(0, 200, 255, 0.1);
+}
+
+.contacts i {
+    font-size: 1.2rem;
+}
