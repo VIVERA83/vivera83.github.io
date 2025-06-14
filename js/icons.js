@@ -32,6 +32,8 @@ export function getFrameworkIcon(framework) {
         'Spring': 'fab fa-java',
         'Laravel': 'fab fa-php',
         'FastAPI': 'fas fa-server',
+
+        'asyncio': 'fab fa-php',
     };
     return icons[framework] || 'fas fa-code';
 }

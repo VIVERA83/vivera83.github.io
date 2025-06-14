@@ -5,15 +5,16 @@ export function detectSkills(repos) {
     const tools = new Map();
 
     const FRAMEWORKS = {
+        'Express': ['express'],
+        'Spring': ['spring'],
         'React': ['react', 'next.js', 'gatsby'],
         'Vue': ['vue', 'nuxt.js'],
         'Angular': ['angular'],
         'Django': ['django'],
         'Flask': ['flask'],
-        'Express': ['express'],
-        'Spring': ['spring'],
         'FastAPI': ['fastapi'],
         'AIOHTTP': ['aiohttp'],
+        'asyncio': ['asyncio'],
     };
 
     const DATABASES = {
@@ -22,7 +23,9 @@ export function detectSkills(repos) {
         'MongoDB': ['mongodb'],
         'Redis': ['redis'],
         'SQLite': ['sqlite'],
-        'Firebase': ['firebase']
+        'Firebase': ['firebase'],
+
+        "RabbitMQ": ['rabbit'],
     };
 
     const TOOLS = {
