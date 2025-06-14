@@ -1,0 +1,104 @@
+.updates-container {
+    display: grid;
+    gap: 20px;
+}
+
+.update-card {
+    background: var(--card-bg);
+    color: white;
+    border-left-color: var(--accent);
+    border-left: 4px solid var(--primary);
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 0 8px 8px 0;
+    transition: transform 0.3s ease;
+}
+
+.update-card:hover {
+    transform: translateX(5px);
+    background: #f1f5ff;
+}
+
+.update-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.update-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--accent); /* Ссылки акцентным цветом */
+    text-decoration: none;
+}
+
+.update-title:hover {
+    text-decoration: underline;
+}
+
+.update-date {
+    font-size: 0.9rem;
+    color: var(--gray);
+    background: #eef2ff;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.update-description {
+    color: var(--gray); /* Серый для описаний */
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.update-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.update-commit {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.update-languages {
+    margin: 15px 0;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.language-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.language-tag {
+    background: #333;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    border: 1px solid #444;
+    /*border: 1px solid #d0e3ff;*/
+    /*border-color: #444;*/
+}
+
+@media (max-width: 768px) {
+    .update-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .update-footer {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
