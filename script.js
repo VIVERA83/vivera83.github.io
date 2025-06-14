@@ -190,6 +190,99 @@ async function getCommitCount(repoName) {
     }
 }
 
+function detectSkills(repos) {
+    const skills = new Map();
+    const frameworks = new Map();
+    const databases = new Map();
+
+    // Список для определения технологий
+    const FRAMEWORKS = ['React', 'Vue', 'Angular', 'Django', 'Flask', 'Fastapi'];
+    const DATABASES = ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'SQLite', 'Oracle'];
+
+    repos.forEach(repo => {
+        // Основные языки
+        if (repo.language) {
+            skills.set(repo.language, (skills.get(repo.language) || 0) + 1);
+        }
+
+        // Поиск в описании репозитория
+        const description = repo.description ? repo.description.toLowerCase() : '';
+
+        // Определение фреймворков
+        FRAMEWORKS.forEach(fw => {
+            if (description.includes(fw.toLowerCase()) ||
+                (repo.topics && repo.topics.includes(fw.toLowerCase()))) {
+                frameworks.set(fw, (frameworks.get(fw) || 0) + 1);
+            }
+        });
+
+        // Определение баз данных
+        DATABASES.forEach(db => {
+            if (description.includes(db.toLowerCase()) ||
+                (repo.topics && repo.topics.includes(db.toLowerCase()))) {
+                databases.set(db, (databases.get(db) || 0) + 1);
+            }
+        });
+    });
+
+    return {
+        skills: Array.from(skills.entries()).sort((a, b) => b[1] - a[1]).slice(0, 8),
+        frameworks: Array.from(frameworks.entries()).sort((a, b) => b[1] - a[1]),
+        databases: Array.from(databases.entries()).sort((a, b) => b[1] - a[1])
+    };
+}
+
+// Новые функции для отрисовки
+function renderFrameworks(frameworks) {
+    const container = document.getElementById('frameworks-container');
+    container.innerHTML = frameworks.length > 0 ? '' : '<p>Фреймворки не обнаружены</p>';
+
+    frameworks.forEach(([framework, count]) => {
+        const card = document.createElement('div');
+        card.className = 'skill-card';
+        card.innerHTML = `
+            <div class="skill-header">
+                <i class="${getFrameworkIcon(framework)} skill-icon"></i>
+                <div class="skill-name">${framework}</div>
+            </div>
+            <div class="skill-projects">Использован в ${count} проектах</div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function renderDatabases(databases) {
+    const container = document.getElementById('databases-container');
+    container.innerHTML = databases.length > 0 ? '' : '<p>Базы данных не обнаружены</p>';
+
+    databases.forEach(([database, count]) => {
+        const card = document.createElement('div');
+        card.className = 'skill-card';
+        card.innerHTML = `
+            <div class="skill-header">
+                <i class="fas fa-database skill-icon"></i>
+                <div class="skill-name">${database}</div>
+            </div>
+            <div class="skill-projects">Использована в ${count} проектах</div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Иконки для фреймворков
+function getFrameworkIcon(framework) {
+    const icons = {
+        'React': 'fab fa-react',
+        'Vue': 'fab fa-vuejs',
+        'Angular': 'fab fa-angular',
+        'Django': 'fab fa-python',
+        'Flask': 'fab fa-python',
+        'Spring': 'fab fa-java',
+        'Laravel': 'fab fa-php'
+    };
+    return icons[framework] || 'fas fa-code';
+}
+
 // Load GitHub data
 async function loadGitHubData() {
     try {
@@ -202,9 +295,11 @@ async function loadGitHubData() {
         updateRepoCount(userResponse.data);
 
         // Render skills
-        const skills = detectSkills(reposResponse.data);
+        // const skills = detectSkills(reposResponse.data);
+        const { skills, frameworks, databases } = detectSkills(reposResponse.data);
         renderSkills(skills);
-
+        renderFrameworks(frameworks);
+        renderDatabases(databases);
         // Render projects
         renderProjects(reposResponse.data);
 
