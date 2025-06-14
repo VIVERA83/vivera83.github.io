@@ -100,6 +100,45 @@ function renderProjects(repos) {
     });
 }
 
+function renderRecentUpdates(repos) {
+    const container = document.getElementById('updates-container');
+    container.innerHTML = '';
+
+    // Сортируем репозитории по дате обновления (сначала самые свежие)
+    const sortedRepos = [...repos]
+        .filter(repo => !repo.fork)
+        .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+        .slice(0, 5); // Показываем 5 последних
+
+    sortedRepos.forEach(repo => {
+        const update = document.createElement('div');
+        update.className = 'update-card';
+
+        // Форматируем дату обновления
+        const updatedDate = new Date(repo.updated_at);
+        const formattedDate = updatedDate.toLocaleDateString('ru-RU', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+
+        update.innerHTML = `
+            <div class="update-header">
+                <a href="${repo.html_url}" target="_blank" class="update-title">${repo.name}</a>
+                <span class="update-date">${formattedDate}</span>
+            </div>
+            <p class="update-description">${repo.description || 'Без описания'}</p>
+            <div class="update-footer">
+                <span class="update-language">${repo.language || 'Разное'}</span>
+                <span class="update-commit">
+                    <i class="fas fa-code-commit"></i> 
+                    ${repo.size} коммитов
+                </span>
+            </div>
+        `;
+        container.appendChild(update);
+    });
+}
 // Initialize activity chart
 function initActivityChart() {
     const ctx = document.getElementById('activity-chart').getContext('2d');
@@ -131,6 +170,14 @@ function initActivityChart() {
     });
 }
 
+function updateRepoCount(userData) {
+    const repoCountElement = document.getElementById('repo-count');
+    if (repoCountElement && userData) {
+        repoCountElement.innerHTML = `<i class="fas fa-code-branch"></i> Репозитории: ${userData.public_repos}`;
+    }
+}
+
+
 // Load GitHub data
 async function loadGitHubData() {
     try {
@@ -139,12 +186,18 @@ async function loadGitHubData() {
             axios.get(REPOS_URL)
         ]);
 
+        // Update repo count
+        updateRepoCount(userResponse.data);
+
         // Render skills
         const skills = detectSkills(reposResponse.data);
         renderSkills(skills);
 
         // Render projects
         renderProjects(reposResponse.data);
+
+        // Render recent updates
+        renderRecentUpdates(reposResponse.data);
 
         // Initialize chart
         initActivityChart();
