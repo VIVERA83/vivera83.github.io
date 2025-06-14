@@ -2,29 +2,11 @@
 const USERNAME = 'VIVERA83';
 const API_URL = `https://api.github.com/users/${USERNAME}`;
 const REPOS_URL = `https://api.github.com/users/${USERNAME}/repos`;
+const GITHUB_TOKEN = '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';
+const CACHE_TIME = 60 * 60 * 1000; // 1 час кеширования
 
-// Detect skills from repositories
-function detectSkills(repos) {
-    const skills = new Map();
+axios.defaults.headers.common['Authorization'] = `token ${GITHUB_TOKEN}`;
 
-    repos.forEach(repo => {
-        // Detect by language
-        if (repo.language) {
-            skills.set(repo.language, (skills.get(repo.language) || 0) + 1);
-        }
-
-        // Detect by project topics
-        if (repo.topics) {
-            repo.topics.forEach(topic => {
-                skills.set(topic, (skills.get(topic) || 0) + 1);
-            });
-        }
-    });
-
-    return Array.from(skills.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 8); // Top 8 skills
-}
 
 // Get icon for skill
 function getSkillIcon(skillName) {
@@ -49,7 +31,30 @@ function getSkillIcon(skillName) {
 
     return icons[skillName] || 'fas fa-code';
 }
+// Иконки для фреймворков
+function getFrameworkIcon(framework) {
+    const icons = {
+        'React': 'fab fa-react',
+        'Vue': 'fab fa-vuejs',
+        'Angular': 'fab fa-angular',
+        'Django': 'fab fa-python',
+        'Flask': 'fab fa-python',
+        'Spring': 'fab fa-java',
+        'Laravel': 'fab fa-php',
+        'FastAPI': 'fas fa-server',
 
+    };
+    return icons[framework] || 'fas fa-code';
+}
+function getToolIcon(tool) {
+    const icons = {
+        'Docker': 'fab fa-docker',
+        'Git': 'fab fa-git-alt',
+        'Webpack': 'fab fa-js',
+        'Kubernetes': 'fas fa-cube'
+    };
+    return icons[tool] || 'fas fa-toolbox';
+}
 // Render skills section
 function renderSkills(skills) {
     const container = document.getElementById('skills-container');
@@ -70,50 +75,36 @@ function renderSkills(skills) {
 }
 
 // Render projects section
-function renderProjects(repos) {
-    const container = document.getElementById('projects-container');
-    container.innerHTML = '';
-
-    // Sort by stars and get top 4
-    const topRepos = repos
-        .filter(repo => !repo.fork)
-        .sort((a, b) => b.stargazers_count - a.stargazers_count)
-        .slice(0, 10);
-
-    topRepos.forEach(repo => {
-        const project = document.createElement('div');
-        project.className = 'project-card';
-        project.innerHTML = `
-            <div class="project-content">
-                <div class="project-title">
-                    <a href="${repo.html_url}" target="_blank">${repo.name}</a>
-                    <span class="project-stars"><i class="fas fa-star"></i> ${repo.stargazers_count}</span>
-                </div>
-                <p class="project-description">${repo.description || 'Описание отсутствует'}</p>
-                <div class="project-footer">
-                    <span>${repo.language || 'Разное'}</span>
-                    <span>Обновлён: ${new Date(repo.updated_at).toLocaleDateString()}</span>
-                </div>
-            </div>
-        `;
-        container.appendChild(project);
-    });
-}
-function renderRecentUpdates(repos) {
+async function renderRecentUpdates(repos) {
     const container = document.getElementById('updates-container');
-    container.innerHTML = '';
+    container.innerHTML = '<div class="loading">Загрузка обновлений...</div>';
 
-    // Сортируем репозитории по дате обновления (сначала самые свежие)
+    // Сортируем репозитории по дате обновления
     const sortedRepos = [...repos]
         .filter(repo => !repo.fork)
         .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-        .slice(0, 10); // Показываем 5 последних
+        .slice(0, 27); // Берем 5 последних
 
-    sortedRepos.forEach(repo => {
+    // Получаем языки для каждого репозитория
+    const reposWithLanguages = await Promise.all(sortedRepos.map(async repo => {
+        try {
+            const response = await axios.get(repo.languages_url);
+            const languages = Object.keys(response.data);
+            return {...repo, languages};
+        } catch (error) {
+            console.error(`Ошибка получения языков для ${repo.name}:`, error);
+            return {...repo, languages: repo.language ? [repo.language] : []};
+        }
+    }));
+
+    container.innerHTML = '';
+
+    // Рендерим карточки с языками
+    reposWithLanguages.forEach(repo => {
         const update = document.createElement('div');
         update.className = 'update-card';
 
-        // Форматируем дату обновления
+        // Форматируем дату
         const updatedDate = new Date(repo.updated_at);
         const formattedDate = updatedDate.toLocaleDateString('ru-RU', {
             day: 'numeric',
@@ -121,14 +112,29 @@ function renderRecentUpdates(repos) {
             year: 'numeric'
         });
 
+        // Создаем элементы языков
+        let languagesHTML = '';
+        if (repo.languages && repo.languages.length > 0) {
+            languagesHTML = `
+                <div class="update-languages">
+                    <strong>Языки:</strong>
+                    <div class="language-tags">
+                        ${repo.languages.map(lang => `<span class="language-tag">${lang}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
         update.innerHTML = `
             <div class="update-header">
                 <a href="${repo.html_url}" target="_blank" class="update-title">${repo.name}</a>
                 <span class="update-date">${formattedDate}</span>
             </div>
             <p class="update-description">${repo.description || 'Без описания'}</p>
+            
+            ${languagesHTML}
+            
             <div class="update-footer">
-                <span class="update-language">${repo.language || 'Разное'}</span>
                 <span class="update-commit">
                     <i class="fas fa-code-commit"></i> 
                     ${repo.size} коммитов
@@ -138,6 +144,7 @@ function renderRecentUpdates(repos) {
         container.appendChild(update);
     });
 }
+
 // Initialize activity chart
 function initActivityChart() {
     const ctx = document.getElementById('activity-chart').getContext('2d');
@@ -169,35 +176,44 @@ function initActivityChart() {
     });
 }
 
-function updateRepoCount(userData) {
-    const repoCountElement = document.getElementById('repo-count');
-    if (repoCountElement && userData) {
-        repoCountElement.innerHTML = `<i class="fas fa-code-branch"></i> Репозитории: ${userData.public_repos}`;
-    }
-}
 
-async function getCommitCount(repoName) {
-    try {
-        const response = await axios.get(`https://api.github.com/repos/${USERNAME}/${repoName}/commits?per_page=1`);
-        if (response.headers.link) {
-            const lastPage = response.headers.link.match(/&page=(\d+)>; rel="last"/);
-            return lastPage ? parseInt(lastPage[1]) : 1;
-        }
-        return 1;
-    } catch (error) {
-        console.error('Ошибка получения коммитов:', error);
-        return '?';
-    }
-}
 
+
+// Detect skills from repositories
 function detectSkills(repos) {
     const skills = new Map();
     const frameworks = new Map();
     const databases = new Map();
+    const tools = new Map();
 
-    // Список для определения технологий
-    const FRAMEWORKS = ['React', 'Vue', 'Angular', 'Django', 'Flask', 'Fastapi'];
-    const DATABASES = ['MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'SQLite', 'Oracle'];
+    // Расширенные списки технологий
+    const FRAMEWORKS = {
+        'React': ['react', 'next.js', 'gatsby'],
+        'Vue': ['vue', 'nuxt.js'],
+        'Angular': ['angular'],
+        'Django': ['django'],
+        'Flask': ['flask'],
+        'Express': ['express'],
+        'Spring': ['spring'],
+        'FastAPI': ['fastapi'],
+        'AIOHTTP': ['aiohttp'],
+    };
+
+    const DATABASES = {
+        'MySQL': ['mysql'],
+        'PostgreSQL': ['postgres', 'postgresql'],
+        'MongoDB': ['mongodb'],
+        'Redis': ['redis'],
+        'SQLite': ['sqlite'],
+        'Firebase': ['firebase']
+    };
+
+    const TOOLS = {
+        'Docker': ['docker'],
+        'Git': ['git'],
+        'Webpack': ['webpack'],
+        'Kubernetes': ['kubernetes', 'k8s']
+    };
 
     repos.forEach(repo => {
         // Основные языки
@@ -205,30 +221,39 @@ function detectSkills(repos) {
             skills.set(repo.language, (skills.get(repo.language) || 0) + 1);
         }
 
-        // Поиск в описании репозитория
-        const description = repo.description ? repo.description.toLowerCase() : '';
+        // Анализ README для дополнительных технологий
+        let readmeContent = '';
+        if (repo.description) readmeContent += repo.description.toLowerCase() + ' ';
+        if (repo.topics) readmeContent += repo.topics.join(' ') + ' ';
 
-        // Определение фреймворков
-        FRAMEWORKS.forEach(fw => {
-            if (description.includes(fw.toLowerCase()) ||
-                (repo.topics && repo.topics.includes(fw.toLowerCase()))) {
-                frameworks.set(fw, (frameworks.get(fw) || 0) + 1);
+        // Поиск технологий в контенте
+        const findTechnology = (techMap) => {
+            for (const [tech, keywords] of Object.entries(techMap)) {
+                for (const keyword of keywords) {
+                    if (readmeContent.includes(keyword)) {
+                        return tech;
+                    }
+                }
             }
-        });
+            return null;
+        };
 
-        // Определение баз данных
-        DATABASES.forEach(db => {
-            if (description.includes(db.toLowerCase()) ||
-                (repo.topics && repo.topics.includes(db.toLowerCase()))) {
-                databases.set(db, (databases.get(db) || 0) + 1);
-            }
-        });
+        // Определяем технологии
+        const framework = findTechnology(FRAMEWORKS);
+        if (framework) frameworks.set(framework, (frameworks.get(framework) || 0) + 1);
+
+        const database = findTechnology(DATABASES);
+        if (database) databases.set(database, (databases.get(database) || 0) + 1);
+
+        const tool = findTechnology(TOOLS);
+        if (tool) tools.set(tool, (tools.get(tool) || 0) + 1);
     });
 
     return {
         skills: Array.from(skills.entries()).sort((a, b) => b[1] - a[1]).slice(0, 8),
         frameworks: Array.from(frameworks.entries()).sort((a, b) => b[1] - a[1]),
-        databases: Array.from(databases.entries()).sort((a, b) => b[1] - a[1])
+        databases: Array.from(databases.entries()).sort((a, b) => b[1] - a[1]),
+        tools: Array.from(tools.entries()).sort((a, b) => b[1] - a[1])
     };
 }
 
@@ -269,48 +294,76 @@ function renderDatabases(databases) {
     });
 }
 
-// Иконки для фреймворков
-function getFrameworkIcon(framework) {
-    const icons = {
-        'React': 'fab fa-react',
-        'Vue': 'fab fa-vuejs',
-        'Angular': 'fab fa-angular',
-        'Django': 'fab fa-python',
-        'Flask': 'fab fa-python',
-        'Spring': 'fab fa-java',
-        'Laravel': 'fab fa-php'
-    };
-    return icons[framework] || 'fas fa-code';
+
+function renderTools(tools) {
+    const container = document.getElementById('tools-container');
+    container.innerHTML = tools.length > 0 ? '' : '<p>Инструменты не обнаружены</p>';
+
+    tools.forEach(([tool, count]) => {
+        const card = document.createElement('div');
+        card.className = 'skill-card';
+        card.innerHTML = `
+            <div class="skill-header">
+                <i class="${getToolIcon(tool)} skill-icon"></i>
+                <div class="skill-name">${tool}</div>
+            </div>
+            <div class="skill-projects">Использован в ${count} проектах</div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function updateRepoCount(userData) {
+    const repoCountElement = document.getElementById('repo-count');
+    if (repoCountElement && userData) {
+        repoCountElement.innerHTML = `<i class="fas fa-code-branch"></i> Репозитории: ${userData.public_repos}`;
+    }
+}
+// Функция для получения данных с кешированием
+async function fetchWithCache(url, cacheKey) {
+    // Проверяем кеш
+    const cachedData = localStorage.getItem(cacheKey);
+    const cachedTime = localStorage.getItem(`${cacheKey}_time`);
+
+    if (cachedData && cachedTime && Date.now() - cachedTime < CACHE_TIME) {
+        return JSON.parse(cachedData);
+    }
+
+    // Делаем запрос к API
+    const response = await axios.get(url);
+    const data = response.data;
+
+    // Сохраняем в кеш
+    localStorage.setItem(cacheKey, JSON.stringify(data));
+    localStorage.setItem(`${cacheKey}_time`, Date.now());
+
+    return data;
 }
 
 // Load GitHub data
 async function loadGitHubData() {
-    try {
-        const [userResponse, reposResponse] = await Promise.all([
-            axios.get(API_URL),
-            axios.get(REPOS_URL)
+    try{
+        const [userData, reposData] = await Promise.all([
+            fetchWithCache(API_URL, 'github_user'),
+            fetchWithCache(REPOS_URL, 'github_repos')
         ]);
-
-        // Update repo count
-        updateRepoCount(userResponse.data);
+        updateRepoCount(userData);
 
         // Render skills
-        // const skills = detectSkills(reposResponse.data);
-        const { skills, frameworks, databases } = detectSkills(reposResponse.data);
+        const { skills, frameworks, databases,tools } = detectSkills(reposData);
         renderSkills(skills);
         renderFrameworks(frameworks);
         renderDatabases(databases);
-        // Render projects
-        renderProjects(reposResponse.data);
-
-        // Render recent updates
-        renderRecentUpdates(reposResponse.data);
-
-        // Initialize chart
+        renderTools(tools);
+        await renderRecentUpdates(reposData);
         initActivityChart();
 
     } catch (error) {
         console.error('Ошибка загрузки данных с GitHub:', error);
+        if (localStorage.getItem('github_user')) {
+            const userData = JSON.parse(localStorage.getItem('github_user'));
+            updateRepoCount(userData);
+        }
         document.getElementById('skills-container').innerHTML =
             '<p>Не удалось загрузить данные с GitHub. Проверьте подключение к интернету.</p>';
     }
