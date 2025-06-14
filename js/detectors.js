@@ -5,33 +5,33 @@ export function detectSkills(repos) {
     const tools = new Map();
 
     const FRAMEWORKS = {
-        'Express': ['express'],
-        'Spring': ['spring'],
         'React': ['react', 'next.js', 'gatsby'],
-        'Vue': ['vue', 'nuxt.js'],
-        'Angular': ['angular'],
         'Django': ['django'],
         'Flask': ['flask'],
         'FastAPI': ['fastapi'],
         'AIOHTTP': ['aiohttp'],
-        'asyncio': ['asyncio'],
+        'Asyncio': ['asyncio'],
+        'Pydantic': ['pydantic', 'pydantic-settings'],
+        'Selenium': ['selenium-python', 'selenium'],
+        'Yandex': ['yadisk'],
+        'Uvicorn': ['uvicorn'],
+        'Alembic': ['alembic'],
+        'Telegram': ['telethon']
     };
 
     const DATABASES = {
-        'MySQL': ['mysql'],
         'PostgreSQL': ['postgres', 'postgresql'],
+        'MySQL': ['mysql'],
         'MongoDB': ['mongodb'],
-        'Redis': ['redis'],
         'SQLite': ['sqlite'],
-        'Firebase': ['firebase'],
-
-        "RabbitMQ": ['rabbit'],
+        'Redis': ['redis'],
+        'RabbitMQ': ['aio-pika'],
+        'MinIO': ['minio', 'miniopy_async'],
     };
 
     const TOOLS = {
         'Docker': ['docker'],
         'Git': ['git'],
-        'Webpack': ['webpack'],
         'Kubernetes': ['kubernetes', 'k8s']
     };
 

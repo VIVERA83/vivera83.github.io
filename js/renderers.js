@@ -1,4 +1,4 @@
-import { getFrameworkIcon, getToolIcon } from './icons.js';
+import {getDatabaseIcon, getFrameworkIcon, getToolIcon} from './icons.js';
 
 
 export async function renderRecentUpdates(repos) {
@@ -96,7 +96,7 @@ export function renderDatabases(databases) {
         card.className = 'skill-card';
         card.innerHTML = `
             <div class="skill-header">
-                <i class="fas fa-database skill-icon"></i>
+                 <i class="${getDatabaseIcon(database)} skill-icon"></i>
                 <div class="skill-name">${database}</div>
             </div>
             <div class="skill-projects">Использована в ${count} проектах</div>
