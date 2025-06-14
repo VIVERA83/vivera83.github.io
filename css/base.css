@@ -1,23 +1,84 @@
-:root {
-    --primary: #4a6fa5;
-    --secondary: #166088;
-    --accent: #4fc3f7;
-    --light: #f8f9fa;
-    --dark: #343a40;
-    --gray: #6c757d;
-}
+/*:root {*/
+/*    --primary: #4a6fa5;*/
+/*    --secondary: #166088;*/
+/*    --accent: #4fc3f7;*/
+/*    --light: #f8f9fa;*/
+/*    --dark: #343a40;*/
+/*    --gray: #6c757d;*/
+/*}*/
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/** {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+/*body {*/
+/*    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+/*    line-height: 1.6;*/
+/*    color: var(--dark);*/
+/*    background-color: #f5f7fb;*/
+/*}*/
+
+/*.container {*/
+/*    width: 90%;*/
+/*    max-width: 1200px;*/
+/*    margin: 0 auto;*/
+/*    padding: 20px;*/
+/*}*/
+
+/*h1 {*/
+/*    font-size: 2.5rem;*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
+/*h2 {*/
+/*    font-size: 2rem;*/
+/*    margin-bottom: 30px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 10px;*/
+/*}*/
+
+/*h3 {*/
+/*    font-size: 1.8rem;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*section {*/
+/*    padding: 60px 0;*/
+/*    background: white;*/
+/*    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);*/
+/*    margin-bottom: 30px;*/
+/*    border-radius: 10px;*/
+/*}*/
+
+/*@media (max-width: 768px) {*/
+/*    h1 {*/
+/*        font-size: 2rem;*/
+/*    }*/
+
+/*    h2 {*/
+/*        font-size: 1.6rem;*/
+/*    }*/
+/*}*/
+:root {
+    /* Цветовая палитра */
+    --primary: #5d8bf4;       /* Ярко-синий для акцентов */
+    --secondary: #2d4263;     /* Тёмно-синий */
+    --accent: #00c8ff;        /* Голубой акцент */
+    --bg-dark: #0f172a;       /* Основной фон */
+    --bg-darker: #0a1122;     /* Акцентный фон */
+    --text-light: #e2e8f0;    /* Основной текст */
+    --text-muted: #94a3b8;    /* Второстепенный текст */
+    --card-bg: #1e293b;       /* Фон карточек */
+    --border-color: #334155;  /* Границы */
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: var(--dark);
-    background-color: #f5f7fb;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 .container {
@@ -27,38 +88,19 @@ body {
     padding: 20px;
 }
 
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+/* Типография */
+h1, h2, h3 {
+    color: var(--text-light);
+    font-weight: 600;
 }
 
-h2 {
-    font-size: 2rem;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-h3 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.8rem; }
 
 section {
-    padding: 60px 0;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    background: var(--bg-darker);
+    border-radius: 12px;
     margin-bottom: 30px;
-    border-radius: 10px;
-}
-
-@media (max-width: 768px) {
-    h1 {
-        font-size: 2rem;
-    }
-
-    h2 {
-        font-size: 1.6rem;
-    }
+    border: 1px solid var(--border-color);
 }

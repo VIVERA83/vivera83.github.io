@@ -1,0 +1,35 @@
+@media (max-width: 992px) {
+    .skills-container, #updates-container {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.7rem; }
+
+    .skills-container, #updates-container {
+        grid-template-columns: 1fr;
+    }
+
+    .update-header {
+        flex-direction: column;
+    }
+
+    header {
+        padding: 60px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stats span {
+        width: 100%;
+        justify-content: center;
+    }
+}
