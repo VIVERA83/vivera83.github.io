@@ -20,20 +20,35 @@ export function getSkillIcon(skillName) {
     };
     return icons[skillName] || 'fas fa-code';
 }
+export function getDatabaseIcon(database) {
+    const icons =    {
+        'PostgreSQL': 'devicon-postgresql-plain',
+        'MySQL': 'fas fa-database',
+        'MongoDB': 'fas fa-database',
+        'SQLite': 'devicon-sqlite-plain',
+        'RabbitMQ': 'devicon-rabbitmq-original',
+        'Redis': 'devicon-redis-plain',
+        'MinIO': 'devicon-amazonwebservices-plain',
+    };
+
+    return icons[database] ||  'fas fa-database';
+}
 
 // Иконки для фреймворков
 export function getFrameworkIcon(framework) {
     const icons = {
         'React': 'fab fa-react',
-        'Vue': 'fab fa-vuejs',
-        'Angular': 'fab fa-angular',
         'Django': 'fab fa-python',
-        'Flask': 'fab fa-python',
-        'Spring': 'fab fa-java',
-        'Laravel': 'fab fa-php',
-        'FastAPI': 'fas fa-server',
-
-        'asyncio': 'fab fa-php',
+        'Flask': 'devicon-flask-original',
+        'FastAPI': 'devicon-fastapi-plain',
+        'Swagger': 'devicon-swagger-plain',
+        'Asyncio': 'fas fa-infinity',
+        'Pydantic': 'fab fa-python',
+        'Selenium': 'fab fa-python',
+        'YandexDisk': 'fab fa-python',
+        'Uvicorn': 'fas fa-server',
+        'Alembic': 'fas fa-server',
+        'Telegram': 'fab fa-python',
     };
     return icons[framework] || 'fas fa-code';
 }
@@ -41,8 +56,7 @@ export function getFrameworkIcon(framework) {
 export function getToolIcon(tool) {
     const icons = {
         'Docker': 'fab fa-docker',
-        'Git': 'fab fa-git-alt',
-        'Webpack': 'fab fa-js',
+        'Git': 'devicon-github-original',
         'Kubernetes': 'fas fa-cube'
     };
     return icons[tool] || 'fas fa-toolbox';
