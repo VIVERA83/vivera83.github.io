@@ -43,12 +43,13 @@ export function getFrameworkIcon(framework) {
         'FastAPI': 'devicon-fastapi-plain',
         'Swagger': 'devicon-swagger-plain',
         'Asyncio': 'fas fa-infinity',
-        'Pydantic': 'fab fa-python',
+        'Pydantic': 'fas fa-check-circle',
         'Selenium': 'fab fa-python',
         'YandexDisk': 'fab fa-python',
-        'Uvicorn': 'fas fa-server',
-        'Alembic': 'fas fa-server',
-        'Telegram': 'fab fa-python',
+        'Uvicorn': 'fas fa-bolt',
+        'Alembic': 'fas fa-flask',
+        'Telegram': 'fab fa-telegram',
+        'Pytest': 'devicon-pytest-plain',
     };
     return icons[framework] || 'fas fa-code';
 }

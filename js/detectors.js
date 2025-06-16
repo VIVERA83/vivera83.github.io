@@ -1,69 +1,75 @@
+const FRAMEWORKS = {
+    'React': ['react', 'next.js', 'gatsby'],
+    'Django': ['django'],
+    'Flask': ['flask'],
+    'FastAPI': ['fastapi'],
+    'AIOHTTP': ['aiohttp'],
+    'Asyncio': ['asyncio'],
+    'Pydantic': ['pydantic', 'pydantic-settings'],
+    'Selenium': ['selenium-python', 'selenium'],
+    'Yandex': ['yadisk'],
+    'Uvicorn': ['uvicorn'],
+    'Alembic': ['alembic'],
+    'Telegram': ['telethon'],
+    'Pytest': ['pytest'],
+};
+
+const DATABASES = {
+    'PostgreSQL': ['postgres', 'postgresql'],
+    'MySQL': ['mysql'],
+    'MongoDB': ['mongodb'],
+    'SQLite': ['sqlite'],
+    'Redis': ['redis'],
+    'RabbitMQ': ['aio-pika', 'rabbitmq'],
+    'MinIO': ['minio', 'miniopy_async'],
+};
+
+const TOOLS = {
+    'Docker': ['docker'],
+    'Git': ['git'],
+    'Kubernetes': ['kubernetes', 'k8s'],
+    'Nginx': ['nginx'],
+};
+
+
+const findTechnology = (content, techMap) => {
+    const result = [];
+    for (const [tech, keywords] of Object.entries(techMap)) {
+        for (const keyword of keywords) {
+            if (content.includes(keyword)) {
+                result.push(tech);
+            }
+        }
+    }
+    if (result.length > 0) return result;
+    return null;
+};
+
+function extracted(repo, databases, techMapList) {
+    const database = findTechnology(repo.topics, techMapList);
+    if (database) {
+        for (const keyword of database) {
+            databases.set(keyword, (databases.get(keyword) || 0) + 1);
+        }
+
+    }
+}
+
 export function detectSkills(repos) {
     const skills = new Map();
     const frameworks = new Map();
     const databases = new Map();
     const tools = new Map();
 
-    const FRAMEWORKS = {
-        'React': ['react', 'next.js', 'gatsby'],
-        'Django': ['django'],
-        'Flask': ['flask'],
-        'FastAPI': ['fastapi'],
-        'AIOHTTP': ['aiohttp'],
-        'Asyncio': ['asyncio'],
-        'Pydantic': ['pydantic', 'pydantic-settings'],
-        'Selenium': ['selenium-python', 'selenium'],
-        'Yandex': ['yadisk'],
-        'Uvicorn': ['uvicorn'],
-        'Alembic': ['alembic'],
-        'Telegram': ['telethon']
-    };
-
-    const DATABASES = {
-        'PostgreSQL': ['postgres', 'postgresql'],
-        'MySQL': ['mysql'],
-        'MongoDB': ['mongodb'],
-        'SQLite': ['sqlite'],
-        'Redis': ['redis'],
-        'RabbitMQ': ['aio-pika'],
-        'MinIO': ['minio', 'miniopy_async'],
-    };
-
-    const TOOLS = {
-        'Docker': ['docker'],
-        'Git': ['git'],
-        'Kubernetes': ['kubernetes', 'k8s'],
-        'Nginx': ['nginx'],
-    };
-
     repos.forEach(repo => {
         if (repo.language) {
             skills.set(repo.language, (skills.get(repo.language) || 0) + 1);
         }
+        extracted(repo, skills, FRAMEWORKS);
+        extracted(repo, frameworks, FRAMEWORKS);
+        extracted(repo, databases, DATABASES);
+        extracted(repo, tools, TOOLS);
 
-        let readmeContent = '';
-        if (repo.description) readmeContent += repo.description.toLowerCase() + ' ';
-        if (repo.topics) readmeContent += repo.topics.join(' ') + ' ';
-
-        const findTechnology = (techMap) => {
-            for (const [tech, keywords] of Object.entries(techMap)) {
-                for (const keyword of keywords) {
-                    if (readmeContent.includes(keyword)) {
-                        return tech;
-                    }
-                }
-            }
-            return null;
-        };
-
-        const framework = findTechnology(FRAMEWORKS);
-        if (framework) frameworks.set(framework, (frameworks.get(framework) || 0) + 1);
-
-        const database = findTechnology(DATABASES);
-        if (database) databases.set(database, (databases.get(database) || 0) + 1);
-
-        const tool = findTechnology(TOOLS);
-        if (tool) tools.set(tool, (tools.get(tool) || 0) + 1);
     });
 
     return {

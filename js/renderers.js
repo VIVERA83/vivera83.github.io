@@ -107,8 +107,8 @@ export function renderDatabases(databases) {
 
 export function renderTools(tools) {
     const container = document.getElementById('tools-container');
-    container.innerHTML = tools.length > 0 ? '' : '<p>Инструменты не обнаружены</p>';
 
+    container.innerHTML = tools.length > 0 ? '' : '<p>Инструменты не обнаружены</p>';
     tools.forEach(([tool, count]) => {
         const card = document.createElement('div');
         card.className = 'skill-card';

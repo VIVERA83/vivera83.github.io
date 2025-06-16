@@ -51,3 +51,9 @@
     font-size: 0.8rem;
     border: 1px solid rgba(93, 139, 244, 0.3);
 }
+
+.language-tag[data-tech*='asyncio'] {
+    background: #fff3e0;
+    border-color: #ff5722;
+    color: #ff5722;
+}
